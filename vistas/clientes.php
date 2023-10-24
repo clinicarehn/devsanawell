@@ -89,14 +89,9 @@ $mysqli->close();//CERRAR CONEXIÓN
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="col-md-4 mb-3">
+                            <div class="col-md-8 mb-3">
                                 <label for="nombre">Nombre <span class="priority">*<span /></label>
                                 <input type="text" required id="name" name="name" placeholder="Nombre"
-                                    class="form-control" />
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <label for="apellido">Apellido <span class="priority">*<span /></label>
-                                <input type="text" required id="lastname" name="lastname" placeholder="Apellido"
                                     class="form-control" />
                             </div>
                             <div class="col-md-4 mb-3" style="display: none;">
@@ -110,7 +105,7 @@ $mysqli->close();//CERRAR CONEXIÓN
                                     <input type="number" class="form-control" id="identidad" name="identidad"
                                         placeholder="Identidad o RTN" maxlength="14"
                                         oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
-                                    <div class="input-group-append" id="grupo_editar_rtn">
+                                    <div class="input-group-append" id="grupo_rtn_colaboradores">
                                         <span data-toggle="tooltip" data-placement="top" title="Editar RTN"><a
                                                 data-toggle="modal" href="#"
                                                 class="btn btn-outline-success form-control editar_rtn">
@@ -175,7 +170,7 @@ $mysqli->close();//CERRAR CONEXIÓN
                             </div>
 
                             <div class="col-md-3 mb-3">
-                                <label for="pacientes_empresa_id">Empresa</label>
+                                <label for="pacientes_empresa_id">Empresa <span class="priority">*<span /></label>
                                 <div class="input-group mb-3">
                                     <select class="selectpicker" id="pacientes_empresa_id" name="pacientes_empresa_id"
                                         required data-live-search="true" title="Empresa">
@@ -218,7 +213,7 @@ $mysqli->close();//CERRAR CONEXIÓN
                             <div class="col-md-4 mb-3">
                                 <label for="responsable_id">Parentesco </label>
                                 <div class="input-group mb-3">
-                                    <select class="selectpicker" id="responsable_id" name="responsable_id" required
+                                    <select class="selectpicker" id="responsable_id" name="responsable_id"
                                         data-live-search="true" title="Parentesco">
                                     </select>
                                 </div>
@@ -228,7 +223,7 @@ $mysqli->close();//CERRAR CONEXIÓN
                             <div class="col-md-4 mb-3">
                                 <label for="referido_id">Referido por: </label>
                                 <div class="input-group mb-3">
-                                    <select class="selectpicker" id="referido_id" name="referido_id" required
+                                    <select class="selectpicker" id="referido_id" name="referido_id"
                                         data-live-search="true" title="Referido por">
                                     </select>
                                 </div>
@@ -279,15 +274,16 @@ $mysqli->close();//CERRAR CONEXIÓN
                                     class="form-control" />
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label for="identidad_clientes">Identidad o RTN</label>
+                                <label for="rtn_empresa">RTN <span class="priority">*<span /></label>
                                 <div class="input-group mb-3">
-                                    <input type="number" class="form-control" id="identidad" name="identidad"
-                                        placeholder="Identidad o RTN" maxlength="14"
-                                        oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
-                                    <div class="input-group-append" id="grupo_editar_rtn">
+                                    <input type="number" class="form-control" id="rtn_empresa" name="rtn_empresa"
+                                        placeholder="RTN" maxlength="14"
+                                        oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                        required>
+                                    <div class="input-group-append" id="grupo_rtn_empresas">
                                         <span data-toggle="tooltip" data-placement="top" title="Editar RTN"><a
                                                 data-toggle="modal" href="#"
-                                                class="btn btn-outline-success form-control editar_rtn">
+                                                class="btn btn-outline-success form-control editar_rtn_empresa">
                                                 <div class="sb-nav-link-icon"></div><i class="fas fa-edit fa-lg"></i>
                                             </a></span>
                                     </div>
@@ -296,15 +292,16 @@ $mysqli->close();//CERRAR CONEXIÓN
                         </div>
                         <div class="form-row">
                             <div class="col-md-8 mb-3">
-                                <label for="correo">Correo <span class="priority">*<span /></label>
-                                <input type="email" id="correo" name="correo" class="form-control"
-                                    placeholder="Primer Teléfono" required maxlength="8"
-                                    oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" />
+                                <label for="telefono_proveedores">Correo</label>
+                                <input type="email" name="correo" id="correo" placeholder="alguien@algo.com"
+                                    class="form-control" data-toggle="tooltip" data-placement="top"
+                                    title="Este correo será utilizado para enviar las citas creadas y las reprogramaciones, como las notificaciones de las citas pendientes de los usuarios."
+                                    maxlength="100" /><label id="validate"></label>
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label for="telefono">Teléfono <span class="priority">*<span /></label>
+                                <label for="telefono">Teléfono</label>
                                 <input type="number" id="telefono1" name="telefono1" class="form-control"
-                                    placeholder="Primer Teléfono" required maxlength="8"
+                                    placeholder="Primer Teléfono" maxlength="8"
                                     oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" />
                             </div>
                         </div>
@@ -338,15 +335,15 @@ $mysqli->close();//CERRAR CONEXIÓN
 
                         <div class="form-row">
                             <div class="col-md-12 mb-3">
-                                <label for="direccion">Dirección <span class="priority">*<span /></label>
-                                <input type="text" required="required" id="direccion" name="direccion"
-                                    placeholder="Dirección Completa" placeholder="Dirección" class="form-control" />
+                                <label for="direccion">Dirección </label>
+                                <input type="text" id="direccion" name="direccion" placeholder="Dirección Completa"
+                                    placeholder="Dirección" class="form-control" />
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-primary ml-2" form="formulario_pacientes" type="submit" id="reg">
+                    <button class="btn btn-primary ml-2" form="formulario_pacientes_empresas" type="submit" id="reg">
                         <div class="sb-nav-link-icon"></div><i class="far fa-save fa-lg"></i> Registrar
                     </button>
                 </div>
@@ -378,6 +375,58 @@ $mysqli->close();//CERRAR CONEXIÓN
                     </button>
                     <button class="btn btn-danger ml-2" type="submit" id="bad" data-dismiss="modal">
                         <div class="sb-nav-link-icon"></div><i class="fas fa-thumbs-up fa-lg"></i> Okay
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal_rtn_empresas">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Cambiar RTN</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="container"></div>
+                <div class="modal-body">
+                    <form id="formulario_agregar_rtn_empresas">
+                        <div class="form-row">
+                            <div class="col-md-12 mb-3">
+                                <input type="hidden" required readonly id="pacientes_empresa_id"
+                                    name="pacientes_empresa_id " class="form-control" />
+                                <div class="input-group mb-3">
+                                    <input type="text" required readonly id="pro" name="pro" class="form-control" />
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">
+                                            <div class="sb-nav-link-icon"></div><i class="fa fa-plus-square"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-12 mb-3">
+                                <label for="name_empresa">Nombre</label>
+                                <input type="text" required readonly id="name_empresa" name="name_empresa"
+                                    class="form-control" readonly />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-4 mb-3">
+                                <label for="rtn_empresa">RTN </label>
+                                <input type="text" class="form-control" name="rtn_empresa" autofocus placeholder="RTN"
+                                    id="rtn_empresa" maxlength="100" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary ml-2" form="formulario_agregar_rtn_empresas" type="submit"
+                        id="reg_manual">
+                        <div class="sb-nav-link-icon"></div><i class="far fa-save fa-lg"></i> Registrar
                     </button>
                 </div>
             </div>
@@ -430,7 +479,7 @@ $mysqli->close();//CERRAR CONEXIÓN
                                     maxlength="100" />
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label for="apellido">Identidad </label>
+                                <label for="identidad_ususario_manual">Identidad </label>
                                 <input type="text" class="form-control" name="identidad_ususario_manual" autofocus
                                     placeholder="Identidad" id="identidad_ususario_manual" maxlength="100" />
                             </div>
@@ -472,11 +521,11 @@ $mysqli->close();//CERRAR CONEXIÓN
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-primary ml-2" form="formulario_pacientes" type="submit" id="reg_manual"
+                    <button class="btn btn-primary ml-2" type="submit" id="reg_manual"
                         form="formulario_agregar_expediente_manual">
                         <div class="sb-nav-link-icon"></div><i class="far fa-save fa-lg"></i> Registrar
                     </button>
-                    <button class="btn btn-warning ml-2" form="formulario_pacientes" type="submit" id="convertir_manual"
+                    <button class="btn btn-warning ml-2" type="submit" id="convertir_manual"
                         form="formulario_agregar_expediente_manual">
                         <div class="sb-nav-link-icon"></div><i class="far fa-save fa-lg"></i> Convertir
                     </button>
@@ -556,6 +605,15 @@ $mysqli->close();//CERRAR CONEXIÓN
                         <div class="form-group mx-sm-3 mb-1">
                             <div class="input-group-append">
                                 <span class="input-group-text">
+                                    <div class="sb-nav-link-icon"></div>Tipo
+                                </span>
+                                <select id="tipo" name="tipo" class="selectpicker" title="Tipo" data-live-search="true">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group mx-sm-3 mb-1">
+                            <div class="input-group-append">
+                                <span class="input-group-text">
                                     <div class="sb-nav-link-icon"></div>Estado
                                 </span>
                                 <select id="estado" name="estado" class="selectpicker" title="Estado"
@@ -564,10 +622,10 @@ $mysqli->close();//CERRAR CONEXIÓN
                             </div>
                         </div>
                         <div class="form-group mx-sm-3 mb-1">
-                            <input type="text" placeholder="Buscar por: Expediente, Nombre, Apellido o Identidad"
+                            <input type="text" placeholder="Buscar por: Nombre, Apellido o Identidad"
                                 data-toggle="tooltip" data-placement="top"
-                                title="Buscar por: Expediente, Nombre, Apellido o Identidad" id="bs_regis" autofocus
-                                class="form-control" size="50" />
+                                title="Buscar por: Nombre, Apellido o Identidad" id="bs_regis" autofocus
+                                class="form-control" size="40" />
                         </div>
                         <div class="form-group mx-sm-3 mb-1">
                             <button class="btn btn-primary ml-1" type="submit" id="nuevo-registro">

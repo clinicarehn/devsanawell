@@ -5,10 +5,8 @@ include('../funtions.php');
 //CONEXION A DB
 $mysqli = connect_mysqli();
 
-$departamento_id = $_POST['departamento_id'];
-
 $query = "SELECT pacientes_empresa_id, nombre 
-    FROM pacientes_empresa '
+    FROM pacientes_empresa
 	ORDER BY nombre";
 
 $result = $mysqli->query($query);	    

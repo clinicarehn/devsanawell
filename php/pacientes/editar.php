@@ -10,7 +10,7 @@ $estado = 1; //1. Activo 2. Inactivo
 $fecha_registro = date("Y-m-d H:i:s");
 $usuario = $_SESSION['colaborador_id'];	
 
-$consulta_expediente = "SELECT pacientes_id,  nombre, apellido, identidad, telefono1, telefono2, fecha_nacimiento, fecha, email, genero, localidad,
+$consulta_expediente = "SELECT pacientes_id,  nombre, identidad, telefono1, telefono2, fecha_nacimiento, fecha, email, genero, localidad,
 (CASE WHEN estado = '1' THEN 'Activo' ELSE 'Inactivo' END) AS 'estado',
 (CASE WHEN expediente = '0' THEN 'TEMP' ELSE expediente END) AS 'expediente', departamento_id, municipio_id, pais_id, responsable, responsable_id, referido_id
 	FROM pacientes
@@ -19,7 +19,6 @@ $result = $mysqli->query($consulta_expediente);
 
 $expediente = "";
 $nombre = "";
-$apellido = "";
 $sexo = "";
 $telefono1 = "";
 $telefono2 = "";
@@ -39,7 +38,6 @@ if($result->num_rows>0){
 	$consulta_expediente1 = $result->fetch_assoc();
 	$expediente = $consulta_expediente1['expediente'];
 	$nombre = $consulta_expediente1['nombre'];
-	$apellido = $consulta_expediente1['apellido'];
 	$sexo = $consulta_expediente1['genero'];
 	$telefono1 = $consulta_expediente1['telefono1'];
 	$telefono2 = $consulta_expediente1['telefono2'];
@@ -83,7 +81,7 @@ if($dias>1){
 
 $datos = array(
 	0 => $nombre, 
-	1 => $apellido,	
+	1 => '',	
 	2 => $telefono1,
 	3 => $telefono2,
 	4 => $sexo,

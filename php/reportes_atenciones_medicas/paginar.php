@@ -20,12 +20,12 @@ $dato_where = "";
 if($colaborador != ""){
 	$where = "WHERE am.fecha BETWEEN '$desde' AND '$hasta' AND f.colaborador_id = '$profesional' AND f.estado = '$estado'";
 }else if($dato != ""){
-	$where = "WHERE CONCAT(p.nombre,' ',p.apellido) LIKE '%$dato%' OR p.apellido LIKE '$dato%' OR p.identidad LIKE '$dato%'";
+	$where = "WHERE p.nombre OR p.identidad LIKE '$dato%'";
 }else{
 	$where = "WHERE am.fecha BETWEEN '$desde' AND '$hasta'";
 }
 
-$query = "SELECT am.atencion_id AS 'atencion_id',  DATE_FORMAT(am.fecha, '%d/%m/%Y') AS 'fecha', CONCAT(p.nombre,' ',p.apellido) AS 'paciente', p.identidad AS 'identidad', am.historia_clinica AS 'historia_clinica',CONCAT(c.nombre,' ',c.apellido) AS 'colaborador', s.nombre AS 'servicio', (CASE WHEN p.genero = 'H' THEN 'Hombre' ELSE 'Mujer' END) AS 'sexo',
+$query = "SELECT am.atencion_id AS 'atencion_id',  DATE_FORMAT(am.fecha, '%d/%m/%Y') AS 'fecha', p.nombre AS 'paciente', p.identidad AS 'identidad', am.historia_clinica AS 'historia_clinica',CONCAT(c.nombre,' ',c.apellido) AS 'colaborador', s.nombre AS 'servicio', (CASE WHEN p.genero = 'H' THEN 'Hombre' ELSE 'Mujer' END) AS 'sexo',
 (CASE WHEN am.paciente = 'N' THEN 'N' ELSE 'S' END) AS 'paciente_tipo'
 	FROM atenciones_medicas AS am
 	INNER JOIN pacientes AS p
@@ -66,7 +66,7 @@ if($paginaActual <= 1){
 	$limit = $nroLotes*($paginaActual-1);
 }
 
-$registro = "SELECT am.atencion_id AS 'atencion_id', DATE_FORMAT(am.fecha, '%d/%m/%Y') AS 'fecha', CONCAT(p.nombre,' ',p.apellido) AS 'paciente', p.identidad AS 'identidad', am.historia_clinica AS 'historia_clinica',CONCAT(c.nombre,' ',c.apellido) AS 'colaborador', s.nombre AS 'servicio', (CASE WHEN p.genero = 'H' THEN 'Hombre' ELSE 'Mujer' END) AS 'sexo',
+$registro = "SELECT am.atencion_id AS 'atencion_id', DATE_FORMAT(am.fecha, '%d/%m/%Y') AS 'fecha', p.nombre AS 'paciente', p.identidad AS 'identidad', am.historia_clinica AS 'historia_clinica',CONCAT(c.nombre,' ',c.apellido) AS 'colaborador', s.nombre AS 'servicio', (CASE WHEN p.genero = 'H' THEN 'Hombre' ELSE 'Mujer' END) AS 'sexo',
 (CASE WHEN am.paciente = 'N' THEN 'N' ELSE 'S' END) AS 'paciente_tipo'
 	FROM atenciones_medicas AS am
 	INNER JOIN pacientes AS p

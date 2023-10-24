@@ -26,7 +26,7 @@ if($colaborador == ""){
 
 //EJECUTAMOS LA CONSULTA DE BUSQUEDA
 
-$registro = "SELECT am.atencion_id AS 'atencion_id',  DATE_FORMAT(am.fecha, '%d/%m/%Y') AS 'fecha', CONCAT(p.nombre,' ',p.apellido) AS 'paciente', p.identidad AS 'identidad', am.antecedentes AS 'antecedentes', am.historia_clinica AS 'historia_clinica', am.examen_fisico AS 'examen_fisico',am.seguimiento AS 'seguimiento', CONCAT(c.nombre,' ',c.apellido) AS 'colaborador', s.nombre AS 'servicio', am.pacientes_id As 'pacientes_id', am.servicio_id AS 'servicio_id', am.colaborador_id AS 'colaborador_id', am.fecha AS 'fecha_consulta',
+$registro = "SELECT am.atencion_id AS 'atencion_id',  DATE_FORMAT(am.fecha, '%d/%m/%Y') AS 'fecha', p.nombre AS 'paciente', p.identidad AS 'identidad', am.antecedentes AS 'antecedentes', am.historia_clinica AS 'historia_clinica', am.examen_fisico AS 'examen_fisico',am.seguimiento AS 'seguimiento', CONCAT(c.nombre,' ',c.apellido) AS 'colaborador', s.nombre AS 'servicio', am.pacientes_id As 'pacientes_id', am.servicio_id AS 'servicio_id', am.colaborador_id AS 'colaborador_id', am.fecha AS 'fecha_consulta',
 (CASE WHEN p.genero = 'H' THEN 'X' ELSE '' END) AS 'h',
 (CASE WHEN p.genero = 'M' THEN 'X' ELSE '' END) AS 'm',
 (CASE WHEN am.paciente = 'N' THEN 'X' ELSE '' END) AS 'n',

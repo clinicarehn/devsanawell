@@ -14,15 +14,15 @@ $fecha = $_POST['fecha'];
 $fechaf = $_POST['fechaf'];
 
 if($servicio != "" && $medico_general == ""){
-	$where = "WHERE CAST(a.fecha_cita as date) BETWEEN '$fecha' AND '$fechaf' AND a.status = '$status' AND a.servicio_id = '$servicio' AND (p.expediente LIKE '%$dato%' OR CONCAT(p.nombre,' ',p.apellido) LIKE '%$dato%' OR p.apellido LIKE '$dato%' OR p.identidad LIKE '$dato%')";		
+	$where = "WHERE CAST(a.fecha_cita as date) BETWEEN '$fecha' AND '$fechaf' AND a.status = '$status' AND a.servicio_id = '$servicio' AND (p.expediente LIKE '%$dato%' OR p.identidad LIKE '$dato%')";		
 }else if($servicio == "" && $medico_general != ""){
-	$where = "WHERE CAST(a.fecha_cita as date) BETWEEN '$fecha' AND '$fechaf' AND a.status = '$status' AND a.colaborador_id = '$medico_general' AND (p.expediente LIKE '%$dato%' OR CONCAT(p.nombre,' ',p.apellido) LIKE '%$dato%' OR p.apellido LIKE '$dato%' OR p.identidad LIKE '$dato%')";		
+	$where = "WHERE CAST(a.fecha_cita as date) BETWEEN '$fecha' AND '$fechaf' AND a.status = '$status' AND a.colaborador_id = '$medico_general' AND (p.expediente LIKE '%$dato%' OR p.identidad LIKE '$dato%')";		
 }else{
-	$where = "WHERE CAST(a.fecha_cita as date) BETWEEN '$fecha' AND '$fechaf' AND a.status = '$status' AND a.servicio_id = '$servicio' AND a.colaborador_id = '$medico_general' AND (p.expediente LIKE '%$dato%' OR CONCAT(p.nombre,' ',p.apellido) LIKE '%$dato%' OR p.apellido LIKE '$dato%' OR p.identidad LIKE '$dato%')";	
+	$where = "WHERE CAST(a.fecha_cita as date) BETWEEN '$fecha' AND '$fechaf' AND a.status = '$status' AND a.servicio_id = '$servicio' AND a.colaborador_id = '$medico_general' AND (p.expediente LIKE '%$dato%' OR p.identidad LIKE '$dato%')";	
 }
 	
-$query = "SELECT a.servicio_id AS 'servicio_id', a.agenda_id as 'agenda_id', a.pacientes_id AS 'pacientes_id', a.expediente AS 'expediente', p.nombre AS 'nombre', p.apellido AS 'apellido', a.hora AS 'hora', DATE_FORMAT(CAST(a.fecha_cita AS DATE ), '%d/%m/%Y') AS 'fecha_cita',
-   CONCAT(c.nombre, ' ', c.apellido) As doctor, p.telefono1 AS 'telefono1', p.telefono2 AS 'telefono2', c.colaborador_id AS 'colaborador_id', a.observacion as 'observacion', a.comentario as 'comentario', CONCAT(c1.nombre, ' ', c1.apellido) As usuario, p.identidad AS 'identidad', a.expediente AS 'expediente', a.servicio_id AS 'servicio_id', CAST(a.fecha_cita AS DATE) AS 'fecha_cita_consulta', c.puesto_id AS 'puesto_id', CAST(a.fecha_cita AS DATE) AS 'fecha', a.servicio_id AS 'servicio_id', CONCAT(p.nombre, ' ', p.apellido) As 'paciente'
+$query = "SELECT a.servicio_id AS 'servicio_id', a.agenda_id as 'agenda_id', a.pacientes_id AS 'pacientes_id', a.expediente AS 'expediente', p.nombre AS 'nombre', a.hora AS 'hora', DATE_FORMAT(CAST(a.fecha_cita AS DATE ), '%d/%m/%Y') AS 'fecha_cita',
+   CONCAT(c.nombre, ' ', c.apellido) As doctor, p.telefono1 AS 'telefono1', p.telefono2 AS 'telefono2', c.colaborador_id AS 'colaborador_id', a.observacion as 'observacion', a.comentario as 'comentario', CONCAT(c1.nombre, ' ', c1.apellido) As usuario, p.identidad AS 'identidad', a.expediente AS 'expediente', a.servicio_id AS 'servicio_id', CAST(a.fecha_cita AS DATE) AS 'fecha_cita_consulta', c.puesto_id AS 'puesto_id', CAST(a.fecha_cita AS DATE) AS 'fecha', a.servicio_id AS 'servicio_id', p.nombre As 'paciente'
    FROM agenda AS a 
    INNER JOIN pacientes AS p 
    ON a.pacientes_id = p.pacientes_id 
@@ -62,8 +62,8 @@ if($paginaActual <= 1){
 	$limit = $nroLotes*($paginaActual-1);
 }
 
-$registro = "SELECT a.servicio_id AS 'servicio_id', a.agenda_id as 'agenda_id', a.pacientes_id AS 'pacientes_id', a.expediente AS 'expediente', p.nombre AS 'nombre', p.apellido AS 'apellido', a.hora AS 'hora', DATE_FORMAT(CAST(a.fecha_cita AS DATE ), '%d/%m/%Y') AS 'fecha_cita',
-   CONCAT(c.nombre, ' ', c.apellido) As doctor, p.telefono1 AS 'telefono1', p.telefono2 AS 'telefono2', c.colaborador_id AS 'colaborador_id', a.observacion as 'observacion', a.comentario as 'comentario', CONCAT(c1.nombre, ' ', c1.apellido) AS usuario, p.identidad AS 'identidad', a.expediente AS 'expediente', a.servicio_id AS 'servicio_id', CAST(a.fecha_cita AS DATE) AS 'fecha_cita_consulta', c.puesto_id AS 'puesto_id', CAST(a.fecha_cita AS DATE) AS 'fecha', a.servicio_id AS 'servicio_id', CONCAT(p.nombre, ' ', p.apellido) As 'paciente'
+$registro = "SELECT a.servicio_id AS 'servicio_id', a.agenda_id as 'agenda_id', a.pacientes_id AS 'pacientes_id', a.expediente AS 'expediente', p.nombre AS 'nombre', a.hora AS 'hora', DATE_FORMAT(CAST(a.fecha_cita AS DATE ), '%d/%m/%Y') AS 'fecha_cita',
+   CONCAT(c.nombre, ' ', c.apellido) As doctor, p.telefono1 AS 'telefono1', p.telefono2 AS 'telefono2', c.colaborador_id AS 'colaborador_id', a.observacion as 'observacion', a.comentario as 'comentario', CONCAT(c1.nombre, ' ', c1.apellido) AS usuario, p.identidad AS 'identidad', a.expediente AS 'expediente', a.servicio_id AS 'servicio_id', CAST(a.fecha_cita AS DATE) AS 'fecha_cita_consulta', c.puesto_id AS 'puesto_id', CAST(a.fecha_cita AS DATE) AS 'fecha', a.servicio_id AS 'servicio_id', p.nombre As 'paciente'
    FROM agenda AS a 
    INNER JOIN pacientes AS p 
    ON a.pacientes_id = p.pacientes_id 

@@ -37,12 +37,12 @@ $año=date("Y", strtotime($fecha));
 //EJECUTAMOS LA CONSULTA DE BUSQUEDA
 
 //REGISTROS
-$query = "SELECT pacientes_id, CONCAT(nombre,' ',apellido) AS 'paciente', identidad, telefono1, telefono2, fecha_nacimiento, expediente AS 'expediente_', localidad,
+$query = "SELECT pacientes_id, nombre AS 'paciente', identidad, telefono1, telefono2, fecha_nacimiento, expediente AS 'expediente_', localidad,
 (CASE WHEN estado = '1' THEN 'Activo' ELSE 'Inactivo' END) AS 'estado',
 (CASE WHEN genero = 'H' THEN 'Hombre' ELSE 'Mujer' END) AS 'genero',
 (CASE WHEN expediente = '0' THEN 'TEMP' ELSE expediente END) AS 'expediente'
 FROM pacientes
-WHERE estado = '$estado' AND (expediente LIKE '$dato%' OR nombre LIKE '$dato%' OR apellido LIKE '$dato%' OR CONCAT(apellido,' ',nombre) LIKE '%$dato%' OR CONCAT(nombre,' ',apellido) LIKE '%$dato%' OR telefono1 LIKE '$dato%')
+WHERE estado = '$estado' AND (expediente LIKE '$dato%' OR nombre LIKE '$dato%' OR telefono1 LIKE '$dato%')
 ORDER BY expediente";
 
 $result = $mysqli->query($query);

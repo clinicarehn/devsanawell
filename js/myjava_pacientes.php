@@ -8,6 +8,7 @@ $(document).ready(function() {
     getResponsable();
     getReferido();
     getPacientesEmpresa();
+    getTipoColaborador();
 
     $('#form_main #nuevo-registro').on('click', function() {
         if (getUsuarioSistema() == 1 || getUsuarioSistema() == 2 || getUsuarioSistema() == 5 ||
@@ -31,6 +32,9 @@ $(document).ready(function() {
             $('#formulario_pacientes').attr({
                 'action': '<?php echo SERVERURL; ?>php/pacientes/agregarPacientes.php'
             });
+
+            $('#formulario_pacientes #grupo_rtn_colaboradores').hide();
+
             $('#modal_pacientes').modal({
                 show: true,
                 keyboard: false,
@@ -46,7 +50,6 @@ $(document).ready(function() {
             });
         }
     });
-
 
     function registrarPacientesEmpresas() {
         if (getUsuarioSistema() == 1 || getUsuarioSistema() == 2 || getUsuarioSistema() == 5 ||
@@ -67,9 +70,13 @@ $(document).ready(function() {
             $('#formulario_pacientes_empresas').attr({
                 'data-form': 'save'
             });
+
             $('#formulario_pacientes_empresas').attr({
-                'action': '<?php echo SERVERURL; ?>php/pacientes/agregarPacientesEmpresa.php'
+                'action': '<?php echo SERVERURL; ?>php/pacientes/agregarEmpresas.php'
             });
+
+            $('#formulario_pacientes_empresas #grupo_rtn_empresas').hide();
+
             $('#modal_pacientes_empresas').modal({
                 show: true,
                 keyboard: false,
@@ -94,6 +101,11 @@ $(document).ready(function() {
     $('#form_main #registrar_empresa').on('click', function(e) {
         e.preventDefault();
         registrarPacientesEmpresas();
+    });
+
+    $('#form_main #tipo').on('change', function() {
+        var tipo = $('#form_main #tipo').val() || 0;
+        tipo === "0" ? pagination(1) : paginationEmpresa(1);
     });
 
     $('#form_main #profesion').on('click', function() {
@@ -335,6 +347,34 @@ function modal_eliminarProfesional(profesional_id) {
     }
 }
 
+function modal_eliminar_empresa(pacientes_empresa_id) {
+    if (getUsuarioSistema() == 1 || getUsuarioSistema() == 2 || getUsuarioSistema() == 5 || getUsuarioSistema() == 6) {
+        var nombre_usuario = consultarNombreEmpresa(pacientes_empresa_id);
+
+        swal({
+                title: "¿Estas seguro?",
+                text: "¿Desea eliminar este registro: " + nombre_usuario + "?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-warning",
+                confirmButtonText: "¡Sí, eliminar el registro!",
+                cancelButtonText: "Cancelar",
+                closeOnConfirm: false
+            },
+            function() {
+                eliminarRegistroEmpresa(pacientes_empresa_id);
+            });
+    } else {
+        swal({
+            title: 'Acceso Denegado',
+            text: 'No tiene permisos para ejecutar esta acción',
+            type: 'error',
+            confirmButtonClass: 'btn-danger'
+        });
+        return false;
+    }
+}
+
 function modal_eliminar(pacientes_id) {
     if (consultarExpediente(pacientes_id) != 0 && (getUsuarioSistema() == 1 || getUsuarioSistema() == 2 ||
             getUsuarioSistema() == 5 || getUsuarioSistema() == 6)) {
@@ -401,7 +441,73 @@ function cleanPacientes() {
     $('#formulario_pacientes #validate').removeClass('bien_email');
     $('#formulario_pacientes #validate').removeClass('error_email');
     $('#formulario_pacientes #validate').html('');
-    $("#formulario #correo").css("border-color", "none");
+    $("#formulario_pacientes #correo").css("border-color", "none");
+}
+
+function cleanEmpreas() {
+    $('#formulario_pacientes_empresas #validate').removeClass('bien_email');
+    $('#formulario_pacientes_empresas #validate').removeClass('error_email');
+    $('#formulario_pacientes_empresas #validate').html('');
+    $("#formulario_pacientes_empresas #correo").css("border-color", "none");
+}
+
+function editarRegistroEmpresa(pacientes_empresa_id) {
+    if (getUsuarioSistema() == 1 || getUsuarioSistema() == 2 || getUsuarioSistema() == 5 || getUsuarioSistema() == 6) {
+        var url = '<?php echo SERVERURL; ?>php/pacientes/editarEmpresa.php';
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: 'pacientes_empresa_id=' + pacientes_empresa_id,
+            success: function(valores) {
+                var datos = eval(valores);
+                $('#formulario_pacientes_empresas #reg').hide();
+                $('#formulario_pacientes_empresas #edi').show();
+                $('#formulario_pacientes_empresas #pro').val('Edición');
+                $('#formulario_pacientes_empresas #pacientes_empresa_id').val(pacientes_empresa_id);
+                $('#formulario_pacientes_empresas #name').val(datos[0]);
+                $('#formulario_pacientes_empresas #rtn_empresa').val(datos[1])
+                $('#formulario_pacientes_empresas #telefono1').val(datos[2]);
+                $('#formulario_pacientes_empresas #pais_id').val(datos[3]);
+                $('#formulario_pacientes_empresas #pais_id').selectpicker('refresh');
+                $('#formulario_pacientes_empresas #departamento_id').val(datos[4]);
+                $('#formulario_pacientes_empresas #departamento_id').selectpicker('refresh');
+                getMunicipioEditar(datos[4], datos[5]);
+                $('#formulario_pacientes_empresas #direccion').val(datos[6]);
+                $('#formulario_pacientes_empresas #correo').val(datos[7]);
+
+                $('#formulario_pacientes_empresas #validate').removeClass('bien_email');
+                $('#formulario_pacientes_empresas #validate').removeClass('error_email');
+                $("#formulario_pacientes_empresas #correo").css("border-color", "none");
+                $('#formulario_pacientes_empresas #validate').html('');
+
+                cleanEmpreas();
+
+                $('#formulario_pacientes_empresas').attr({
+                    'data-form': 'update'
+                });
+                $('#formulario_pacientes_empresas').attr({
+                    'action': '<?php echo SERVERURL; ?>php/pacientes/editarEmpresa.php'
+                });
+
+                $('#formulario_pacientes_empresas #grupo_rtn_colaboradores').show();
+
+                $('#modal_pacientes_empresas').modal({
+                    show: true,
+                    keyboard: false,
+                    backdrop: 'static'
+                });
+                return false;
+            }
+        });
+    } else {
+        swal({
+            title: 'Acceso Denegado',
+            text: 'No tiene permisos para ejecutar esta acción',
+            type: 'error',
+            confirmButtonClass: 'btn-danger'
+        });
+        return false;
+    }
 }
 
 function editarRegistro(pacientes_id) {
@@ -419,7 +525,6 @@ function editarRegistro(pacientes_id) {
                 $('#formulario_pacientes #grupo_expediente').show();
                 $('#formulario_pacientes #pacientes_id').val(pacientes_id);
                 $('#formulario_pacientes #name').val(datos[0]);
-                $('#formulario_pacientes #lastname').val(datos[1]);
                 $('#formulario_pacientes #telefono1').val(datos[2]);
                 $('#formulario_pacientes #telefono2').val(datos[3]);
                 $('#formulario_pacientes #sexo').val(datos[4]);
@@ -448,12 +553,16 @@ function editarRegistro(pacientes_id) {
                 $('#formulario_pacientes #validate').html('');
 
                 cleanPacientes();
+
                 $('#formulario_pacientes').attr({
                     'data-form': 'update'
                 });
                 $('#formulario_pacientes').attr({
                     'action': '<?php echo SERVERURL; ?>php/pacientes/editarPacientes.php'
                 });
+
+                $('#formulario_pacientes #grupo_rtn_colaboradores').show();
+
                 $('#modal_pacientes').modal({
                     show: true,
                     keyboard: false,
@@ -489,6 +598,52 @@ function eliminarProfesional(id) {
                 });
                 paginationPorfesionales(1);
                 $('#modal_profesiones').modal('hide');
+                return false;
+            } else if (registro == 2) {
+                swal({
+                    title: "Error",
+                    text: "No se puede eliminar este registro",
+                    type: "error",
+                    confirmButtonClass: 'btn-danger'
+                });
+                return false;
+            } else if (registro == 3) {
+                swal({
+                    title: "Error",
+                    text: "No se puede eliminar este registro, cuenta con información almacenada",
+                    type: "error",
+                    confirmButtonClass: 'btn-danger'
+                });
+                return false;
+            } else {
+                swal({
+                    title: "Error",
+                    text: "Error al completar el registro",
+                    type: "error",
+                    confirmButtonClass: 'btn-danger'
+                });
+                return false;
+            }
+        }
+    });
+    return false;
+}
+
+function eliminarRegistroEmpresa(pacientes_empresa_id) {
+    var url = '<?php echo SERVERURL; ?>php/pacientes/eliminarEmpresa.php';
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data: 'pacientes_empresa_id=' + pacientes_empresa_id,
+        success: function(registro) {
+            if (registro == 1) {
+                swal({
+                    title: "Success",
+                    text: "Registro eliminado correctamente",
+                    type: "success",
+                    timer: 3000, //timeOut for auto-clos
+                });
+                pagination(1);
                 return false;
             } else if (registro == 2) {
                 swal({
@@ -682,7 +837,7 @@ function busquedaUsuarioManualIdentidad() {
 }
 
 function busquedaUsuarioManualExpediente() {
-    var url = '<?php echo SERVERURL; ?>php/pacientes/consultarExpediente.php';
+    var url = '<?php echo SERVERURL; ?>php/pacien.php';
 
     var expediente = $('#formulario_agregar_expediente_manual #expediente_usuario_manual').val();
 
@@ -739,7 +894,60 @@ function consultarNombre(pacientes_id) {
     return resp;
 }
 
-function modal_agregar_expediente_manual(id, expediente) {
+function consultarNombreEmpresa(pacientes_empresa_id) {
+    var url = '<?php echo SERVERURL; ?>php/pacientes/getNombreEmpresa.php';
+    var resp;
+
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data: 'pacientes_empresa_id=' + pacientes_empresa_id,
+        async: false,
+        success: function(data) {
+            resp = data;
+        }
+    });
+    return resp;
+}
+
+function modal_agregar_rtn_empresa_manual(pacientes_empresa_id) {
+    if (getUsuarioSistema() == 1 || getUsuarioSistema() == 2 || getUsuarioSistema() == 5 || getUsuarioSistema() == 6) {
+        $('#formulario_agregar_rtn_empresas')[0].reset();
+        var url = '<?php echo SERVERURL; ?>php/pacientes/buscarUsuarioEmpresa.php';
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: 'pacientes_empresa_id=' + pacientes_empresa_id,
+            success: function(valores) {
+                var datos = eval(valores);
+
+                $("#formulario_agregar_rtn_empresas #pacientes_empresa_id ").val(pacientes_empresa_id);
+                $("#formulario_agregar_rtn_empresas #name_empresa").val(datos[0]);
+                $("#formulario_agregar_rtn_empresas #rtn_empresa").val(datos[1]);
+                $('#formulario_agregar_rtn_empresas #pro').val('Registrar');
+
+                $("#reg_manual").show();
+
+                $('#modal_rtn_empresas').modal({
+                    show: true,
+                    keyboard: false,
+                    backdrop: 'static'
+                });
+                return false;
+            }
+        });
+        return false;
+    } else {
+        swal({
+            title: "Acceso Denegado",
+            text: "No tiene permisos para ejecutar esta acción",
+            type: "error",
+            confirmButtonClass: 'btn-danger'
+        });
+    }
+}
+
+function modal_agregar_rtn_paciente_manual(id, expediente) {
     if (getUsuarioSistema() == 1 || getUsuarioSistema() == 2 || getUsuarioSistema() == 5 || getUsuarioSistema() == 6) {
         $('#formulario_agregar_expediente_manual')[0].reset();
         var url = '<?php echo SERVERURL; ?>php/pacientes/buscarUsuario.php';
@@ -880,6 +1088,37 @@ function pagination(partida) {
     return false;
 }
 
+function paginationEmpresa(partida) {
+    var url = '<?php echo SERVERURL; ?>php/pacientes/paginarEmpresas.php';
+    var estado = "";
+    var paciente = "";
+    var dato = $('#form_main #bs_regis').val();
+
+    if ($('#form_main #estado').val() == "" || $('#form_main #estado').val() == null) {
+        estado = 1;
+    } else {
+        estado = $('#form_main #estado').val();
+    }
+
+    if ($('#form_main #tipo').val() == "" || $('#form_main #tipo').val() == null) {
+        paciente = 1;
+    } else {
+        paciente = $('#form_main #tipo').val();
+    }
+
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data: 'partida=' + partida + '&estado=' + estado + '&dato=' + dato + '&paciente=' + paciente,
+        success: function(data) {
+            var array = eval(data);
+            $('#agrega-registros').html(array[0]);
+            $('#pagination').html(array[1]);
+        }
+    });
+    return false;
+}
+
 function getSexo() {
     var url = '<?php echo SERVERURL; ?>php/pacientes/getSexo.php';
 
@@ -895,6 +1134,21 @@ function getSexo() {
             $('#formulario_agregar_expediente_manual #sexo_manual').html("");
             $('#formulario_agregar_expediente_manual #sexo_manual').html(data);
             $('#formulario_agregar_expediente_manual #sexo_manual').selectpicker('refresh');
+        }
+    });
+}
+
+function getTipoColaborador() {
+    var url = '<?php echo SERVERURL; ?>php/pacientes/getTipoColaborador.php';
+
+    $.ajax({
+        type: "POST",
+        url: url,
+        async: true,
+        success: function(data) {
+            $('#form_main #tipo').html("");
+            $('#form_main #tipo').html(data);
+            $('#form_main #tipo').selectpicker('refresh');
         }
     });
 }
@@ -1221,6 +1475,9 @@ function getPais() {
 
             $('#formulario_pacientes #pais_id').val(1);
             $('#formulario_pacientes #pais_id').selectpicker('refresh');
+
+            $('#formulario_pacientes_empresas #pais_id').val(1);
+            $('#formulario_pacientes_empresas #pais_id').selectpicker('refresh');
         }
     });
 }
@@ -1411,10 +1668,23 @@ $(document).ready(function() {
     });
 });
 
-$('#formulario_pacientes #grupo_editar_rtn').on('click', function(e) {
+$(document).ready(function() {
+    $("#modal_rtn_empresas").on('shown.bs.modal', function() {
+        $(this).find('#formulario_agregar_rtn_empresas #rtn_empresa').focus();
+    });
+});
+
+$('#formulario_pacientes .editar_rtn').on('click', function(e) {
     e.preventDefault();
 
-    modal_agregar_expediente_manual($('#formulario_pacientes #pacientes_id').val(), $(
+    modal_agregar_rtn_paciente_manual($('#formulario_pacientes #pacientes_id').val(), $(
         '#formulario_pacientes #expediente').val());
+});
+
+$('#formulario_pacientes_empresas .editar_rtn_empresa').on('click', function(e) {
+    e.preventDefault();
+
+    modal_agregar_rtn_empresa_manual($('#formulario_agregar_rtn_empresas #pacientes_empresa_id')
+        .val());
 });
 </script>

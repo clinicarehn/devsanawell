@@ -31,6 +31,10 @@ $fecha = "";
 $anos = "";
 $meses = "";
 $dias = "";
+$palabra_anos = "";
+$palabra_mes = "";
+$palabra_dia = "";
+$edad_completa = "";
 
 if($result->num_rows>0){
 	$consulta_expediente1 = $result->fetch_assoc();
@@ -47,25 +51,30 @@ if($result->num_rows>0){
 	$anos = $valores_array['anos'];
 	$meses = $valores_array['meses'];	  
 	$dias = $valores_array['dias'];	
-	/*********************************************************************************/
-	if ($anos>1 ){
-	   $palabra_anos = "Años";
-	}else{
-	  $palabra_anos = "Año";
-	}
+	/*********************************************************************************/	
 
-	if ($meses>1 ){
-	   $palabra_mes = "Meses";
-	}else{
-	  $palabra_mes = "Mes";
-	}
-
-	if($dias>1){
-		$palabra_dia = "Días";
-	}else{
-		$palabra_dia = "Día";
-	}
+	if($anos !== "") {
+		if ($anos>1 ){
+			$palabra_anos = "Años";
+		 }else{
+		   $palabra_anos = "Año";
+		 }
+	 
+		 if ($meses>1 ){
+			$palabra_mes = "Meses";
+		 }else{
+		   $palabra_mes = "Mes";
+		 }
+	 
+		 if($dias>1){
+			 $palabra_dia = "Días";
+		 }else{
+			 $palabra_dia = "Día";
+		 }
 		 
+		 $edad_completa = $anos." ".$palabra_anos.", ".$meses." ".$palabra_mes." y ".$dias." ".$palabra_dia;
+	}
+	
 	if( strlen($identidad)<10 ){
 		$bloqueo = 2; //NO SE BLOQUEA	   	   
 	}else{
@@ -82,7 +91,7 @@ $datos = array(
 				3 => $fecha_nacimiento, 	
                 4 => $fecha,	
                 5 => $expediente,	
-                6 => $anos." ".$palabra_anos.", ".$meses." ".$palabra_mes." y ".$dias." ".$palabra_dia			
+                6 => $edad_completa		
 				);
 echo json_encode($datos);
 

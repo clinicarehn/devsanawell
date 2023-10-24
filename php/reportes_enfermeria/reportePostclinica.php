@@ -64,7 +64,7 @@ if($colaborador_usuario == ""){
 	$where = "WHERE post.fecha BETWEEN '$desde' AND '$hasta' and post.servicio_id = '$servicio' AND post.usuario = '$colaborador_usuario'";	
 }
 
-$registro = "SELECT post.postclinica_id AS 'postclinica_id', DATE_FORMAT(post.fecha, '%d/%m/%Y') AS 'fecha', CONCAT(p.apellido,' ',p.nombre) AS 'nombre', post.expediente AS 'expediente', p.identidad AS 'identidad', post.edad AS 'edad', p.sexo AS 'sexo', pa.patologia_id AS 'patologia', pa.nombre AS 'diagnostico', post.fecha_cita AS 'fecha_cita', post.hora AS 'hora', s.nombre AS 'servicio', CONCAT(c.nombre,' ',c.apellido) AS 'medico', post.instrucciones AS 'instrucciones', post.precedimiento As 'procedimiento', CONCAT(c1.nombre,' ',c1.apellido) AS 'usuario'
+$registro = "SELECT post.postclinica_id AS 'postclinica_id', DATE_FORMAT(post.fecha, '%d/%m/%Y') AS 'fecha', p.nombre AS 'nombre', post.expediente AS 'expediente', p.identidad AS 'identidad', post.edad AS 'edad', p.sexo AS 'sexo', pa.patologia_id AS 'patologia', pa.nombre AS 'diagnostico', post.fecha_cita AS 'fecha_cita', post.hora AS 'hora', s.nombre AS 'servicio', CONCAT(c.nombre,' ',c.apellido) AS 'medico', post.instrucciones AS 'instrucciones', post.precedimiento As 'procedimiento', CONCAT(c1.nombre,' ',c1.apellido) AS 'usuario'
       FROM postclinica AS post
       INNER JOIN pacientes AS p
       ON post.expediente = p.expediente

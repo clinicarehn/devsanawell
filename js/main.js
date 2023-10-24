@@ -134,6 +134,11 @@ $('.FormularioAjax').submit(function (e) {
 							setTimeout(sendMail(datos[8]), 5000);
 						}
 
+						if (datos[6] == "PacientesEmpresas") {
+							paginationEmpresa(1);
+							getPacientesEmpresa();
+						}						
+
 						if (datos[6] == "formCita") {
 							reportePDF(datos[8]);
 							sendEmailReprogramación(datos[8]);

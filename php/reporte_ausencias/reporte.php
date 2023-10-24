@@ -26,7 +26,7 @@ if($colaborador == ""){
 
 //EJECUTAMOS LA CONSULTA DE BUSQUEDA
 
-$registro = "SELECT a.ausencia_id AS 'ausencia_id', DATE_FORMAT(a.fecha, '%d/%m/%Y') AS 'fecha', CONCAT(p.nombre,' ',p.apellido) AS 'paciente', p.identidad AS 'identidad', CONCAT(c.nombre,' ',c.apellido) AS 'colaborador', s.nombre AS 'servicio', a.pacientes_id AS 'pacientes_id'
+$registro = "SELECT a.ausencia_id AS 'ausencia_id', DATE_FORMAT(a.fecha, '%d/%m/%Y') AS 'fecha', p.nombre AS 'paciente', p.identidad AS 'identidad', CONCAT(c.nombre,' ',c.apellido) AS 'colaborador', s.nombre AS 'servicio', a.pacientes_id AS 'pacientes_id'
 	FROM ausencias AS a
 	INNER JOIN pacientes AS p
 	ON a.pacientes_id = p.pacientes_id

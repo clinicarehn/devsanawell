@@ -44,7 +44,7 @@ if($profesional == ""){
     $where = "WHERE pre.fecha BETWEEN '$desde' AND '$hasta' AND pre.colaborador_id = '$profesional'";
 }
 
-$registro = "SELECT DISTINCT pre.pacientes_id AS 'pacientes_id', pre.preclinica_id AS 'preclinica_id', DATE_FORMAT(pre.fecha, '%d/%m/%Y') AS 'fecha', CONCAT(p.apellido,' ',p.nombre) AS 'nombre', pre.expediente As 'expediente', p.identidad AS 'identidad', pre.edad AS 'edad', (CASE WHEN p.genero = 'H' THEN 'X' ELSE '' END) AS 'h',
+$registro = "SELECT DISTINCT pre.pacientes_id AS 'pacientes_id', pre.preclinica_id AS 'preclinica_id', DATE_FORMAT(pre.fecha, '%d/%m/%Y') AS 'fecha', p.nombre AS 'nombre', pre.expediente As 'expediente', p.identidad AS 'identidad', pre.edad AS 'edad', (CASE WHEN p.genero = 'H' THEN 'X' ELSE '' END) AS 'h',
   (CASE WHEN p.genero = 'M' THEN 'X' ELSE '' END) AS 'm', (CASE WHEN pre.paciente = 'n' THEN 'X' ELSE '' END) AS 'nuevo', (CASE WHEN pre.paciente = 'S' THEN 'X' ELSE '' END) AS 'subsiguiente', pre.pa AS 'pa', pre.fr As 'fr', pre.fc As 'fc', pre.t As 'temperatura', pre.talla AS 'talla', pre.peso AS 'peso', CONCAT(c.nombre,' ',c.apellido) AS 'medico', CONCAT(c1.nombre,' ',c1.apellido) AS 'usuario'
    FROM preclinica AS pre
    INNER JOIN pacientes AS p

@@ -12,12 +12,12 @@ $estado = $_POST['estado'];
 $paciente = $_POST['paciente'];
 $dato = $_POST['dato'];
 
-$query_row = "SELECT pacientes_id, CONCAT(nombre,' ',apellido) AS 'paciente', identidad, telefono1, telefono2, fecha_nacimiento, expediente AS 'expediente_', localidad,
+$query_row = "SELECT pacientes_id, nombre AS 'paciente', identidad, telefono1, telefono2, fecha_nacimiento, expediente AS 'expediente_', localidad,
 (CASE WHEN estado = '1' THEN 'Activo' ELSE 'Inactivo' END) AS 'estado',
 (CASE WHEN genero = 'H' THEN 'Hombre' ELSE 'Mujer' END) AS 'genero',
 (CASE WHEN expediente = '0' THEN 'TEMP' ELSE expediente END) AS 'expediente', email
 FROM pacientes
-WHERE estado = '$estado' AND (expediente LIKE '$dato%' OR nombre LIKE '$dato%' OR apellido LIKE '$dato%' OR CONCAT(apellido,' ',nombre) LIKE '%$dato%' OR CONCAT(nombre,' ',apellido) LIKE '%$dato%' OR telefono1 LIKE '$dato%' OR identidad LIKE '$dato%')
+WHERE estado = '$estado' AND (expediente LIKE '$dato%' OR nombre LIKE '$dato%' OR telefono1 LIKE '$dato%' OR identidad LIKE '$dato%')
 ORDER BY expediente";	
 
 $result = $mysqli->query($query_row);     
@@ -50,30 +50,31 @@ if($paginaActual <= 1){
 	$limit = $nroLotes*($paginaActual-1);
 }
 
-$query = "SELECT pacientes_id, CONCAT(nombre,' ',apellido) AS 'paciente', identidad, telefono1, telefono2, fecha, expediente AS 'expediente_', localidad,
+$query = "SELECT pacientes_id, nombre AS 'paciente', identidad, telefono1, telefono2, fecha, expediente AS 'expediente_', localidad,
 (CASE WHEN estado = '1' THEN 'Activo' ELSE 'Inactivo' END) AS 'estado',
 (CASE WHEN genero = 'H' THEN 'Hombre' ELSE 'Mujer' END) AS 'genero',
 (CASE WHEN expediente = '0' THEN 'TEMP' ELSE expediente END) AS 'expediente', email
 FROM pacientes
-WHERE estado = '$estado' AND (expediente LIKE '$dato%' OR nombre LIKE '$dato%' OR apellido LIKE '$dato%' OR CONCAT(apellido,' ',nombre) LIKE '%$dato%' OR CONCAT(nombre,' ',apellido) LIKE '%$dato%' OR telefono1 LIKE '$dato%' OR identidad LIKE '$dato%')
+WHERE estado = '$estado' AND (expediente LIKE '$dato%' OR nombre LIKE '$dato%' '$dato%' OR telefono1 LIKE '$dato%' OR identidad LIKE '$dato%')
 ORDER BY expediente LIMIT $limit, $nroLotes
 ";
 $result = $mysqli->query($query);    
   
 $tabla = $tabla.'<table class="table table-striped table-condensed table-hover">
 					<tr>
-					   <th width="4.33%">N°</th>
-					   <th width="8.33%">Expediente</th>
-					   <th width="8.33%">Identidad</th>
-					   <th width="20.33%">Paciente</th>
-					   <th width="4.33%">Genero</th>					   
-					   <th width="8.33%">Telefono1</th>
-					   <th width="8.33%">Telefono2</th>	
-					   <th width="8.33%">Correo</th>
-					   <th width="8.33%">Dirección</th>
-					   <th width="4.33%">Estado</th>
-					   <th width="8.33%">Editar</th>
-					   <th width="8.33%">Eliminar</th>
+					   <th width="2.69%">N°</th>
+					   <th width="3.69%">Expediente</th>
+					   <th width="7.69%">Identidad</th>
+					   <th width="18.69%">Paciente</th>
+					   <th width="7.69%">Genero</th>					   
+					   <th width="7.69%">Telefono1</th>
+					   <th width="7.69%">Telefono2</th>	
+					   <th width="7.69%">Correo</th>
+					   <th width="7.69%">Dirección</th>
+					   <th width="3.69%">Estado</th>
+					   <th width="9.69%">Asignar</th>
+					   <th width="7.69%">Editar</th>
+					   <th width="7.69%">Eliminar</th>
 					</tr>';
 
 $i=1;						
@@ -91,6 +92,9 @@ while($registro2 = $result->fetch_assoc()){
 	   <td>'.$registro2['localidad'].'</td>	
 	   <td>'.$registro2['estado'].'</td> 
 	   <td>
+			<a class="btn btn btn-secondary ml-2" href="javascript:modal_agregar_expediente('.$registro2['pacientes_id'].','.$registro2['expediente_'].');void(0);"><div class="sb-nav-link-icon"></div><i class="fas fas fa-plus fa-lg"></i> Expediente</a>
+		</td>	   
+	   <td>
 			<a class="btn btn btn-secondary ml-2" href="javascript:editarRegistro('.$registro2['pacientes_id'].');void(0);"><div class="sb-nav-link-icon"></div><i class="fas fa-user-edit fa-lg"></i> Editar</a>
 		</td>
 		<td>
@@ -102,11 +106,11 @@ while($registro2 = $result->fetch_assoc()){
 
 if($nroProductos == 0){
 	$tabla = $tabla.'<tr>
-	   <td colspan="11" style="color:#C7030D">No se encontraron resultados</td>
+	   <td colspan="13" style="color:#C7030D">No se encontraron resultados</td>
 	</tr>';		
 }else{
    $tabla = $tabla.'<tr>
-	  <td colspan="11"><b><p ALIGN="center">Total de Registros Encontrados '.number_format($nroProductos).'</p></b>
+	  <td colspan="13"><b><p ALIGN="center">Total de Registros Encontrados '.number_format($nroProductos).'</p></b>
    </tr>';		
 }   
 

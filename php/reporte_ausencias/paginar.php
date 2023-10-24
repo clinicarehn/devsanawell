@@ -20,12 +20,12 @@ $dato_where = "";
 if($colaborador != ""){
 	$where = "WHERE a.fecha BETWEEN '$desde' AND '$hasta' AND f.colaborador_id = '$profesional' AND f.estado = '$estado'";
 }else if($dato != ""){
-	$where = "WHERE CONCAT(p.nombre,' ',p.apellido) LIKE '%$dato%' OR p.apellido LIKE '$dato%' OR p.identidad LIKE '$dato%'";
+	$where = "WHERE p.nombre OR p.identidad LIKE '$dato%'";
 }else{
 	$where = "WHERE a.fecha BETWEEN '$desde' AND '$hasta'";
 }
 
-$query = "SELECT a.ausencia_id AS 'ausencia_id', DATE_FORMAT(a.fecha, '%d/%m/%Y') AS 'fecha', CONCAT(p.nombre,' ',p.apellido) AS 'paciente', p.identidad AS 'identidad', CONCAT(c.nombre,' ',c.apellido) AS 'colaborador', s.nombre AS 'servicio', a.pacientes_id AS 'pacientes_id'
+$query = "SELECT a.ausencia_id AS 'ausencia_id', DATE_FORMAT(a.fecha, '%d/%m/%Y') AS 'fecha', p.nombre AS 'paciente', p.identidad AS 'identidad', CONCAT(c.nombre,' ',c.apellido) AS 'colaborador', s.nombre AS 'servicio', a.pacientes_id AS 'pacientes_id'
 	FROM ausencias AS a
 	INNER JOIN pacientes AS p
 	ON a.pacientes_id = p.pacientes_id
@@ -65,7 +65,7 @@ if($paginaActual <= 1){
 	$limit = $nroLotes*($paginaActual-1);
 }
 
-$registro = "SELECT a.ausencia_id AS 'ausencia_id',  DATE_FORMAT(a.fecha, '%d/%m/%Y') AS 'fecha', CONCAT(p.nombre,' ',p.apellido) AS 'paciente', p.identidad AS 'identidad', CONCAT(c.nombre,' ',c.apellido) AS 'colaborador', s.nombre AS 'servicio', a.pacientes_id AS 'pacientes_id'
+$registro = "SELECT a.ausencia_id AS 'ausencia_id',  DATE_FORMAT(a.fecha, '%d/%m/%Y') AS 'fecha', p.nombre AS 'paciente', p.identidad AS 'identidad', CONCAT(c.nombre,' ',c.apellido) AS 'colaborador', s.nombre AS 'servicio', a.pacientes_id AS 'pacientes_id'
 	FROM ausencias AS a
 	INNER JOIN pacientes AS p
 	ON a.pacientes_id = p.pacientes_id

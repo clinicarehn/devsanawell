@@ -36,7 +36,6 @@ if($query_pacientes){
 		$consulta_expediente1 = $result->fetch_assoc();
 		$expediente = $consulta_expediente1['expediente'];
 		$nombre = $consulta_expediente1['nombre'];
-		$apellido = $consulta_expediente1['apellido'];
 		$sexo = $consulta_expediente1['genero'];
 		$telefono1 = $consulta_expediente1['telefono1'];
 		$telefono2 = $consulta_expediente1['telefono2'];
@@ -52,7 +51,7 @@ if($query_pacientes){
 		$observacion = "Expediente ha sido asignado correctamente";
 
 		$pacientes_id_historial = correlativo('pacientes_id ', 'pacientes');
-		$insert = "INSERT INTO pacientes VALUES ('$pacientes_id','$expediente','$identidad','$nombre','$apellido','$sexo','$telefono1','$telefono2','$fecha_nacimiento','$correo','$fecha','$departamento_id','$municipio_id','$localidad','$religion_id','$profesion_id','$usuario','$estado','$observacion','$fecha_registro')";	
+		$insert = "INSERT INTO pacientes VALUES ('$pacientes_id','$expediente','$identidad','$nombre','','$sexo','$telefono1','$telefono2','$fecha_nacimiento','$correo','$fecha','$departamento_id','$municipio_id','$localidad','$religion_id','$profesion_id','$usuario','$estado','$observacion','$fecha_registro')";	
 		$mysqli->query($insert);
 		//HISTORIAL DE PACIENTES		
 	}

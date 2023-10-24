@@ -7,7 +7,6 @@ $mysqli = connect_mysqli();
 
 $expediente = 0;
 $nombre = cleanStringStrtolower($_POST['name']);
-$apellido = cleanStringStrtolower($_POST['lastname']);
 $sexo = $_POST['sexo'];
 $telefono1 = $_POST['telefono1'];
 $telefono2 = $_POST['telefono2'];
@@ -67,6 +66,16 @@ if(isset($_POST['referido_id'])){//COMPRUEBO SI LA VARIABLE ESTA DIFINIDA
 	$referido_id = 0;
 }
 
+if(isset($_POST['pacientes_empresa_id'])){//COMPRUEBO SI LA VARIABLE ESTA DIFINIDA
+	if($_POST['pacientes_empresa_id'] == ""){
+		$pacientes_empresa_id = 0;
+	}else{
+		$pacientes_empresa_id = $_POST['pacientes_empresa_id'];
+	}
+}else{
+	$pacientes_empresa_id = 0;
+}
+
 $localidad = cleanStringStrtolower($_POST['direccion']);
 $religion_id = 0;
 $profesion_id = 0;
@@ -97,13 +106,13 @@ if($identidad == 0){
 //EVALUAR SI EXISTE EL PACIENTE
 $select = "SELECT pacientes_id
 	FROM pacientes
-	WHERE identidad = '$identidad' AND nombre = '$nombre' AND apellido = '$apellido' AND telefono1 = '$telefono1'";
+	WHERE identidad = '$identidad' AND nombre = '$nombre' AND telefono1 = '$telefono1'";
 $result = $mysqli->query($select) or die($mysqli->error);
 
 if($result->num_rows==0){
-	$pacientes_id = correlativo('pacientes_id ', 'pacientes');
+	$pacientes_id = correlativo('pacientes_id', 'pacientes');
 	$insert = "INSERT INTO pacientes 
-		VALUES ('$pacientes_id','$expediente','$identidad','$nombre','$apellido','$sexo','$telefono1','$telefono2','$fecha_nacimiento','$correo','$fecha','$pais_id','$departamento_id','$municipio_id','$localidad','$religion_id','$profesion_id','$estado_civil','$responsable','$responsable_id','$usuario','$estado','$fecha_registro','$referido_id')";
+		VALUES ('$pacientes_id','$expediente','$identidad','$nombre','$sexo','$telefono1','$telefono2','$fecha_nacimiento','$correo','$fecha','$pais_id','$departamento_id','$municipio_id','$localidad','$religion_id','$profesion_id','$estado_civil','$responsable','$responsable_id','$usuario','$estado','$fecha_registro','$referido_id', $pacientes_empresa_id)";
 	$query = $mysqli->query($insert);
 	
 	if($query){

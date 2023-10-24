@@ -7,7 +7,7 @@ $mysqli = connect_mysqli();
 
 $pacientes_id = $_POST['pacientes_id'];
 
-$query = "SELECT pacientes_id,  CONCAT(nombre,' ',apellido) AS 'paciente', identidad, telefono1, telefono2, fecha_nacimiento, email,
+$query = "SELECT pacientes_id,  nombre AS 'paciente', identidad, telefono1, telefono2, fecha_nacimiento, email,
 (CASE WHEN estado = '1' THEN 'Activo' ELSE 'Inactivo' END) AS 'estado',
 (CASE WHEN genero = 'H' THEN 'Hombre' ELSE 'Mujer' END) AS 'genero',
 (CASE WHEN expediente = '0' THEN 'TEMP' ELSE expediente END) AS 'expediente'
